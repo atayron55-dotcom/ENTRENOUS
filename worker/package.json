@@ -1,0 +1,13 @@
+{
+  "name": "entre-nous-signal-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Service de mise en relation Entre Nous sur Cloudflare Workers. Aucun message n'y transite.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

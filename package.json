@@ -1,0 +1,78 @@
+{
+  "name": "entre-nous-desktop-p2p",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Messagerie de bureau privée à deux, pair-à-pair, Windows, Linux et macOS.",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "desktop": "electron .",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win --x64 --publish never",
+    "dist:linux": "electron-builder --linux --x64 --publish never",
+    "dist:mac": "electron-builder --mac --universal --publish never"
+  },
+  "devDependencies": {
+    "electron": "^45.3.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "fr.entre-nous.p2p",
+    "productName": "Entre Nous",
+    "artifactName": "Entre-Nous-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "desktop/assets"
+    },
+    "files": [
+      "desktop/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "win": {
+      "icon": "desktop/assets/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "artifactName": "Entre-Nous-${version}-win-setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Entre Nous"
+    },
+    "portable": {
+      "artifactName": "Entre-Nous-${version}-win-portable.${ext}"
+    },
+    "linux": {
+      "icon": "desktop/assets/icon.png",
+      "category": "Network",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "maintainer": "Entre Nous <entre-nous@example.com>",
+      "synopsis": "Messagerie privée à deux, pair-à-pair"
+    },
+    "mac": {
+      "icon": "desktop/assets/icon.icns",
+      "category": "public.app-category.social-networking",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    }
+  },
+  "author": {
+    "name": "Entre Nous",
+    "email": "entre-nous@example.com"
+  },
+  "homepage": "https://example.com/entre-nous",
+  "license": "UNLICENSED"
+}

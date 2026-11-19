@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17151d">
+  <title>Entre Nous</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-row">
+        <div class="brand-icon">e<span>♥</span></div>
+        <div><strong>Entre Nous</strong><small>notre petit monde</small></div>
+        <button id="settingsButton" class="icon-btn gear" title="Paramètres" aria-label="Paramètres">⚙</button>
+      </div>
+      <div class="side-label">ESPACE PRIVÉ</div>
+      <div class="peer-card">
+        <div class="avatar" id="localAvatar">♡</div>
+        <div class="peer-copy"><strong id="localName">Moi</strong><small>Cet ordinateur</small></div>
+        <span class="status-dot local-dot"></span>
+      </div>
+      <div class="peer-card partner-card">
+        <div class="avatar partner-avatar" id="partnerAvatar">♡</div>
+        <div class="peer-copy"><strong id="partnerName">Ton autre moitié</strong><small id="partnerStatus">Pas encore connecté·e</small></div>
+        <span class="status-dot" id="partnerDot"></span>
+      </div>
+      <div class="side-note"><span>✦</span><p>Un petit coin à nous, loin du bruit du monde.</p></div>
+      <div class="sidebar-bottom">
+        <div class="connection-mini"><span id="connectionDot"></span><span id="connectionLabel">Hors session</span></div>
+        <button id="newSessionSide" class="subtle-btn">＋ Nouvelle session</button>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div><p class="eyebrow">VOTRE PETIT ESPACE À DEUX</p><h1>Notre conversation</h1></div>
+        <div class="top-actions"><span class="private-pill">♡ privé · P2P</span><button id="topSettings" class="icon-btn" title="Paramètres">☷</button></div>
+      </header>
+
+      <section id="lobbyView" class="lobby-view">
+        <div class="lobby-card">
+          <div class="big-heart">♡</div>
+          <p class="eyebrow">BIENVENUE CHEZ VOUS</p>
+          <h2>Retrouvons-nous ici.</h2>
+          <p class="intro">Crée une session et partage le code avec ta femme, ou rejoins la sienne. Les messages et les fichiers circulent directement entre vos ordinateurs.</p>
+          <div class="session-actions">
+            <button id="createSession" class="primary-btn">Créer une session <span>→</span></button>
+            <div class="join-box">
+              <label for="inviteCode">Rejoindre avec un code</label>
+              <div class="join-row"><input id="inviteCode" maxlength="42" placeholder="ABCD-EFGH-JKLM-NPQR-STUV-WXYZ-2345-6789-AB" autocomplete="off"><button id="joinSession" class="secondary-btn">Rejoindre</button></div>
+            </div>
+          </div>
+          <p id="lobbyStatus" class="feedback" aria-live="polite">Configure le service de mise en relation dans les paramètres pour commencer.</p>
+        </div>
+        <div class="privacy-note"><span>♧</span><div><strong>Vos conversations restent entre vos appareils.</strong><p>Le service de mise en relation ne transporte que les informations nécessaires à l'ouverture de la connexion. Il ne reçoit pas le contenu de vos messages ou de vos photos.</p></div></div>
+      </section>
+
+      <section id="waitingView" class="waiting-view" hidden>
+        <div class="waiting-card">
+          <div class="pulse-heart">♡</div>
+          <p class="eyebrow">SESSION CRÉÉE</p>
+          <h2>En attente de ta moitié…</h2>
+          <p>Envoie-lui ce code. Il est temporaire et permet de rejoindre cette session.</p>
+          <div class="invite-code-row"><code id="inviteCodeDisplay">ABCD-EFGH-JKLM-NPQR-STUV-WXYZ-2345-6789-AB</code><button id="copyInvite" class="secondary-btn">Copier</button></div>
+          <p id="waitingStatus" class="feedback">En attente de la deuxième personne…</p>
+          <button id="cancelWaiting" class="text-btn">Annuler la session</button>
+        </div>
+      </section>
+
+      <section id="chatView" class="chat-view" hidden>
+        <div class="chat-heading"><div class="online-avatar" id="chatPartnerAvatar">♡</div><div><strong id="chatPartnerName">Notre conversation</strong><small><span class="online-dot"></span> Connecté·e directement</small></div><div class="secure-mark">⌁ Connexion chiffrée</div></div>
+        <div id="messages" class="messages" aria-live="polite">
+          <div class="empty-chat"><div>♡</div><h3>Vous voilà réunis.</h3><p>Votre conversation commence ici.</p></div>
+        </div>
+        <div class="composer-area">
+          <div id="attachmentPreview" class="attachment-preview" hidden><span id="attachmentName"></span><button id="removeAttachment" class="text-btn">Retirer</button></div>
+          <div class="composer">
+            <button id="attachButton" class="tool-btn" title="Joindre une image">＋</button>
+            <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+            <textarea id="messageInput" rows="1" maxlength="4000" placeholder="Écrire un message… (Entrée pour envoyer)"></textarea>
+            <button id="emojiButton" class="tool-btn" title="Emojis">☺</button>
+            <button id="sendButton" class="send-btn" title="Envoyer">➤</button>
+            <div id="emojiPicker" class="emoji-picker" hidden><div class="picker-head"><strong>Vos emojis</strong><button id="closeEmoji" class="text-btn">×</button></div><div id="emojiGrid" class="emoji-grid"></div><button id="addEmojiFromPicker" class="text-btn">＋ Ajouter un emoji</button></div>
+          </div>
+          <div class="composer-foot">Entrée pour envoyer · Maj + Entrée pour aller à la ligne</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="settingsModal" class="modal-backdrop" hidden>
+    <section class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <header class="modal-head"><div><p class="eyebrow">PERSONNALISATION</p><h2 id="settingsTitle">Paramètres</h2></div><button id="closeSettings" class="icon-btn">×</button></header>
+      <section class="settings-section"><h3>Ton profil</h3><div class="profile-edit"><div id="settingsAvatar" class="avatar large-avatar">♡</div><div class="profile-controls"><label for="displayName">Nom affiché</label><input id="displayName" maxlength="32" placeholder="Ton prénom ou surnom"><div class="button-line"><button id="saveProfile" class="secondary-btn">Enregistrer</button><label class="file-button" for="avatarInput">Changer la photo</label><input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div></div><p id="profileFeedback" class="feedback"></p></section>
+      <section class="settings-section"><h3>Connexion entre ordinateurs</h3><p class="muted">Adresse du petit service qui échange uniquement les invitations entre vos applications.</p><label for="signalUrl">Adresse du service (WebSocket sécurisé)</label><input id="signalUrl" type="url" placeholder="wss://votre-service.example"><div class="turn-fields"><label for="turnUrl">Relais TURN (facultatif, pour les réseaux difficiles)</label><input id="turnUrl" type="text" placeholder="turns:turn.example.com:5349"><div class="turn-row"><input id="turnUsername" type="text" placeholder="Identifiant TURN"><input id="turnCredential" type="password" placeholder="Mot de passe TURN"></div></div><div class="button-line"><button id="saveSignal" class="secondary-btn">Enregistrer les paramètres</button><span id="signalFeedback" class="feedback"></span></div><p class="hint">Le service de mise en relation ne stocke pas les conversations. STUN est utilisé automatiquement ; TURN est facultatif et sert de relais chiffré si le réseau bloque une connexion directe. Voir le guide fourni avec l’application.</p></section>
+      <section class="settings-section"><div class="section-title"><div><h3>Emojis personnalisés</h3><p class="muted">Importe des PNG, JPEG ou WebP et utilise <code>:nom:</code> dans tes messages.</p></div></div><div class="emoji-form"><input id="emojiName" maxlength="24" placeholder="nom-de-emoji"><label class="file-button" for="emojiInput">Choisir une image</label><input id="emojiInput" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="addEmoji" class="secondary-btn">Ajouter</button></div><p id="emojiFeedback" class="feedback"></p><div id="customEmojiList" class="custom-emoji-list"></div></section>
+      <footer class="modal-foot">♡ Historique, profil et emojis conservés sur cet ordinateur.</footer>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
