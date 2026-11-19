@@ -105,16 +105,23 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 }
 
+// Vérifie que l'appel IPC vient bien de la page principale de l'application.
+function isTrustedSender(event) {
+  const frame = event.senderFrame;
+  if (!frame || frame !== event.sender.mainFrame) return false;
+  try { return new URL(frame.url).protocol === 'file:'; } catch { return false; }
+}
+
 ipcMain.handle('entre-nous:get-settings', (event) => {
-  if (!event.senderFrame?.isMainFrame) throw new Error('Action non autorisée.');
+  if (!isTrustedSender(event)) throw new Error('Action non autorisée.');
   return readSettings();
 });
 ipcMain.handle('entre-nous:save-settings', (event, value) => {
-  if (!event.senderFrame?.isMainFrame) throw new Error('Action non autorisée.');
+  if (!isTrustedSender(event)) throw new Error('Action non autorisée.');
   return writeSettings(value);
 });
 ipcMain.handle('entre-nous:open-external', async (event, url) => {
-  if (!event.senderFrame?.isMainFrame || typeof url !== 'string') throw new Error('Action non autorisée.');
+  if (!isTrustedSender(event) || typeof url !== 'string') throw new Error('Action non autorisée.');
   const parsed = new URL(url);
   if (parsed.protocol !== 'https:') throw new Error('Seuls les liens HTTPS sont autorisés.');
   await shell.openExternal(parsed.toString());
