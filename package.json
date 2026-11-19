@@ -1,6 +1,6 @@
 {
   "name": "entre-nous-desktop-p2p",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "private": true,
   "description": "Messagerie de bureau privée à deux, pair-à-pair, Windows, Linux et macOS.",
   "main": "desktop/main.cjs",
@@ -66,7 +66,11 @@
       ],
       "identity": null,
       "hardenedRuntime": false,
-      "gatekeeperAssess": false
+      "gatekeeperAssess": false,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Entre Nous utilise le micro pour vos appels vocaux.",
+        "NSCameraUsageDescription": "Entre Nous utilise la caméra pour vos appels vidéo."
+      }
     }
   },
   "author": {
